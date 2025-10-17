@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panadería La Alhambra — Dulces típicos de Granada</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">
+        <img src="assets/logo.svg" alt="Panadería La Alhambra" class="logo">
+        <span class="brand-text">Panadería La Alhambra</span>
+      </a>
+      <nav class="main-nav" id="mainNav">
+        <button class="nav-toggle" id="navToggle" aria-expanded="false">☰</button>
+        <ul class="nav-list">
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <h1>Dulces típicos de Granada</h1>
+        <p>Recetas tradicionales hechas con cariño en el corazón de Granada. Torrijas, piononos, y mucho más.</p>
+        <a class="btn" href="#productos">Ver productos</a>
+      </div>
+    </section>
+
+    <section id="productos" class="productos container">
+      <h2>Nuestros productos</h2>
+      <p class="lead">Especialidades granadinas hechas diariamente</p>
+      <div class="grid">
+        <article class="producto">
+          <img src="https://via.placeholder.com/400x260?text=Pionono" alt="Pionono" loading="lazy">
+          <h3>Pionono</h3>
+          <p>Bizcocho enrollado con crema dulce, típico de Santa Fe, cerca de Granada.</p>
+        </article>
+
+        <article class="producto">
+          <img src="https://via.placeholder.com/400x260?text=Torrijas" alt="Torrijas" loading="lazy">
+          <h3>Torrijas</h3>
+          <p>Torrijas caramelizadas con canela y limón, perfectas para compartir.</p>
+        </article>
+
+        <article class="producto">
+          <img src="https://via.placeholder.com/400x260?text=Polvorones" alt="Polvorones" loading="lazy">
+          <h3>Polvorones</h3>
+          <p>Polvorones de manteca, muy crujientes y con aroma tradicional.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="nosotros" class="nosotros container">
+      <h2>Sobre nosotros</h2>
+      <p>Panadería familiar con más de 30 años elaborando dulces granadinos con recetas transmitidas de generación en generación.</p>
+    </section>
+
+    <section id="contacto" class="contacto container">
+      <h2>Contacto y pedidos</h2>
+      <p>Haz tu pedido por teléfono, WhatsApp o ven a visitarnos.</p>
+      <ul class="contact-list">
+        <li>Teléfono: <a href="tel:+34900000000">+34 900 000 000</a></li>
+        <li>WhatsApp: <a href="https://wa.me/34900000000" target="_blank">+34 900 000 000</a></li>
+        <li>Dirección: Calle de la Dulzura 1, Granada</li>
+      </ul>
+      <form id="contactForm" class="contact-form" action="#" onsubmit="return false;">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" required>
+
+        <label for="email">Correo</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="mensaje">Mensaje / Pedido</label>
+        <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+
+        <button class="btn" id="sendBtn">Enviar</button>
+        <p id="formMsg" class="form-msg" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Panadería La Alhambra — Dulces típicos de Granada</p>
+      <p>Hecho con cariño en Granada.</p>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
