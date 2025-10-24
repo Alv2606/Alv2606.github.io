@@ -8,10 +8,19 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#222}
 .container{max-width:var(--container);margin:0 auto;padding:1rem}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0}
-.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:inherit}
-.logo{width:56px;height:56px}
-.brand-text{font-weight:700;font-size:1.1rem}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+.brand{display:flex;align-items:center;gap:1rem;text-decoration:none;color:inherit}
+.logo{
+  width:80px;
+  height:80px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(177,79,44,0.1));
+}
+.logo:hover{
+  transform:scale(1.05);
+  filter: drop-shadow(0 4px 8px rgba(177,79,44,0.2));
+}
+.brand-text{font-weight:700;font-size:1.4rem}
 .main-nav{position:relative}
 .nav-toggle{display:none;background:transparent;border:0;font-size:1.4rem}
 .nav-list{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
@@ -25,8 +34,56 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 .hero-image{width:100%;max-width:520px;border-radius:12px;object-fit:cover;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
 .lead{color:var(--muted)}
 .btn{display:inline-block;background:var(--accent);color:#fff;padding:.6rem 1rem;border-radius:8px;text-decoration:none}
-.productos h2,.nosotros h2,.contacto h2{margin-top:1rem}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem}
+.nosotros{
+  text-align:center;
+  max-width:900px;
+  margin:0 auto;
+  padding:3rem 1rem 4rem;
+}
+.nosotros h2{
+  margin-bottom:2rem;
+  color:var(--accent);
+}
+.nosotros p{
+  margin-bottom:1.5rem;
+  line-height:1.6;
+}
+.nosotros p:last-child{
+  margin-bottom:0;
+}
+
+.divider{
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent), transparent);
+  opacity: 0.2;
+  margin: 2rem auto;
+  max-width: 200px;
+}
+
+.productos{
+  background: linear-gradient(180deg, rgba(177,79,44,0.03), transparent);
+  padding: 4rem 0;
+}
+
+.productos h2{
+  text-align: center;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.productos .lead{
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--muted);
+}
+
+.grid{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 1.5rem;
+}
+
+.contacto h2{margin-top:1rem}
 .producto{background:#fff;padding:0.6rem;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.04)}
 .producto img{width:100%;height:auto;border-radius:8px}
 .contact-list{list-style:none;padding:0;margin:0.6rem 0}
