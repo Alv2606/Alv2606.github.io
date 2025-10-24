@@ -1,3 +1,0 @@
-- Creame un código inicial para una página web para una panadería que produce dulces típicos de Granada
-
-- añade pestiños, soplillos y cazuela mohína ademas de los tres productos que ya has añadido y añadeles a todos fotos correspondientes
