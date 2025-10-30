@@ -36,4 +36,31 @@ document.addEventListener('DOMContentLoaded', function(){
   // Año actual en footer
   const yearSpan = document.getElementById('year');
   if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+  // Efecto: minimizar la imagen de la Alhambra y dejarla fija como fondo arriba al hacer scroll
+  const hero = document.querySelector('.hero');
+  if(hero){
+    let ticking = false;
+    // Histéresis: dos umbrales para evitar parpadeos cuando el scroll está cerca del límite.
+    const SHRINK_THRESHOLD = 220; // pasar a shrink
+    const EXPAND_THRESHOLD = 160; // volver a estado normal
+
+    const onScroll = () => {
+      if(!ticking){
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY || window.pageYOffset;
+          if(y > SHRINK_THRESHOLD){
+            if(!hero.classList.contains('shrink')) hero.classList.add('shrink');
+          } else if(y < EXPAND_THRESHOLD){
+            if(hero.classList.contains('shrink')) hero.classList.remove('shrink');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // comprobar estado inicial
+    onScroll();
+  }
 });

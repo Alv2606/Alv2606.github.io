@@ -31,13 +31,38 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 
 /* Hero Section */
 .hero{
-  background:linear-gradient(180deg, rgba(177,79,44,0.06), transparent);
-  padding:4rem 0;
-  text-align: center;
+  position:relative;
+  height:60vh;
+  min-height:380px;
+  display:flex;
+  align-items:center;
+  background-image: url('assets/images/alhambra.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: height 300ms ease, background-position 300ms ease, transform 300ms ease;
+  color:#fff;
+  padding:0;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  /* overlay que protege la legibilidad sobre la imagen; se transformará a un color sólido al minimizar */
+  background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
+  z-index:0;
+  transition: background 200ms ease, opacity 200ms ease;
+  opacity:1;
+  pointer-events:none;
 }
 .hero-inner{
-  max-width: 800px;
-  margin: 0 auto;
+  position:relative;
+  z-index:1;
+  padding:4rem 1rem;
+  text-align:center;
+  width:100%;
+  max-width:800px;
+  margin:0 auto;
   display:flex;
   flex-direction:column;
   gap:1.5rem;
@@ -46,8 +71,27 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 .hero h1{
   font-size:2.4rem;
   margin:0;
-  color:var(--accent);
+  color:#fff; /* ahora en blanco sobre la imagen grande */
 }
+.hero p, .hero .btn{ color: #fff; }
+
+.hero.shrink{
+  /* Reducida y pegada en la parte superior: mostrar overlay sólido para cubrir la imagen (evita quitar la imagen bruscamente) */
+  position:sticky;
+  top:0;
+  height:64px;
+  min-height:64px;
+  z-index:1000;
+  transition: height 300ms ease, padding 300ms ease, background-color 250ms ease, transform 250ms ease;
+  will-change: transform, height;
+}
+.hero.shrink::before{
+  /* Transformar la overlay en un color sólido para que no parezca transparente */
+  background: var(--bg);
+  opacity:1;
+}
+.hero.shrink .hero-inner{ padding:0.5rem 1rem; max-width:1100px; align-items:flex-start }
+.hero.shrink .hero-inner h1{ color: #000; font-size:1.05rem }
 
 /* Sobre Nosotros */
 .nosotros{
@@ -68,24 +112,7 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
   margin-bottom:0;
 }
 
-/* Alhambra Banner */
-.alhambra-banner{
-  width: 100%;
-  padding: 2rem 0;
-  background: linear-gradient(180deg, rgba(177,79,44,0.03), transparent);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.alhambra-image{
-  width: 100%;
-  max-width: 1000px;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
+/* Alhambra image is now used as the hero background (styles above). */
 
 /* Divider */
 .divider{
@@ -206,9 +233,9 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 .nav-list{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
 .nav-list a{text-decoration:none;color:var(--muted);padding:0.25rem 0.5rem;border-radius:6px}
 .nav-list a:hover{color:var(--accent)}
-.hero{background:linear-gradient(180deg, rgba(177,79,44,0.06), transparent);padding:4rem 0}
+.hero{padding:4rem 0}
 .hero-inner{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
-.hero h1{font-size:2rem;margin:0;color:var(--accent)}
+.hero h1{font-size:2rem;margin:0;color:#fff}
 .hero-text{flex:1}
 .hero-media{flex:1;display:flex;justify-content:center;align-items:center}
 .hero-image{width:100%;max-width:520px;border-radius:12px;object-fit:cover;box-shadow:0 8px 24px rgba(0,0,0,0.12)}
@@ -318,4 +345,44 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 @media(min-width:901px){
   .hero-inner{flex-direction:row;align-items:center}
   .hero h1{font-size:2.6rem}
+}
+
+/* Sección de productos sin gluten (promoción) */
+.sin-gluten{
+  padding:3rem 1rem 4rem;
+  background: linear-gradient(180deg, rgba(177,79,44,0.02), transparent);
+}
+.sin-gluten h2{color:var(--accent);text-align:center;margin-bottom:0.5rem}
+.sin-gluten p{max-width:900px;margin:0.5rem auto 1.5rem;text-align:center;color:var(--muted)}
+.sin-gluten .gf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:0 auto}
+.sin-gluten .gf-card{background:#fff;border-radius:10px;padding:0.6rem;box-shadow:0 6px 18px rgba(0,0,0,0.05);text-align:center}
+.sin-gluten .gf-card img{width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:0.6rem}
+.sin-gluten .gf-card h3{color:var(--accent);margin:0.5rem 0}
+
+@media(max-width:900px){
+  .sin-gluten .gf-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .sin-gluten .gf-grid{grid-template-columns:1fr}
+}
+
+/* Tartas personalizadas */
+.tartas{padding:3rem 1rem 4rem;background:linear-gradient(180deg, rgba(177,79,44,0.01), transparent)}
+.tartas h2{color:var(--accent);text-align:center;margin-bottom:0.5rem}
+.tartas p{max-width:900px;margin:0.5rem auto 1rem;text-align:center;color:var(--muted)}
+.tartas ul{max-width:900px;margin:0 auto 1rem;padding-left:1.2rem;color:var(--muted)}
+.tarta-nota{text-align:center;color:var(--muted);margin-bottom:1rem}
+.tarta-examples{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:1100px;margin:0 auto}
+.tarta-card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.05);text-align:center}
+.tarta-card h3{color:var(--accent);margin-bottom:0.4rem}
+
+/* Hacer que la tarjeta de bodas ocupe el ancho de las tres columnas */
+.tarta-card.wedding{grid-column:1 / -1}
+
+@media(max-width:900px){
+  .tarta-examples{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  .tarta-examples{grid-template-columns:1fr}
+  .tarta-card.wedding{grid-column:auto}
 }
