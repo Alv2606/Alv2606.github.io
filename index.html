@@ -145,18 +145,22 @@
         <p class="tarta-nota">Variaciones de precio: dependemos del tamaño, ingredientes y nivel de personalización. Consultar presupuesto al hacer la reserva.</p>
         <div class="tarta-examples">
           <article class="tarta-card">
+            <img src="assets/images/tarta-clasica.jpg" alt="Tarta clásica" loading="lazy">
             <h3>Tarta clásica (12 raciones)</h3>
             <p>Desde 45€ — aviso mínimo 5 días.</p>
           </article>
           <article class="tarta-card">
+            <img src="assets/images/tarta-personalizada.jpg" alt="Tarta personalizada" loading="lazy">
             <h3>Tarta personalizada (más de 20 raciones)</h3>
             <p>Presupuesto a medida — aviso mínimo 10 días; posible recargo por diseño complejo.</p>
           </article>
           <article class="tarta-card">
+            <img src="assets/images/tarta-sin-gluten.jpg" alt="Tarta sin gluten" loading="lazy">
             <h3>Opciones sin gluten / veganas</h3>
             <p>Disponibles previa consulta; pueden tener variación de precio.</p>
           </article>
           <article class="tarta-card wedding">
+            <img src="assets/images/tarta-boda.jpg" alt="Tarta de boda" loading="lazy">
             <h3>Tartas para bodas y eventos</h3>
             <p>Servicio especial para bodas y grandes eventos: diseño personalizado, pruebas de sabor (bajo cita) y coordinación con el catering si se requiere. Plazo mínimo 30 días para encargos nupciales; presupuesto personalizado y condiciones especiales de entrega y montaje si es necesario.</p>
           </article>
@@ -187,6 +191,18 @@
       </form>
     </section>
   </main>
+
+  <!-- Modal de producto -->
+  <div id="product-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-header">
+        <h3 id="modal-title"></h3>
+        <button id="modal-close" class="modal-close" aria-label="Cerrar">×</button>
+      </div>
+      <img id="modal-img" src="" alt="" />
+      <p id="modal-desc"></p>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container footer-inner">

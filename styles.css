@@ -2,6 +2,7 @@
 :root{
   --bg:#fffaf5;
   --accent:#b14f2c;
+  --header-bg:#f0b78a; /* naranja más suave */
   --muted:#6b6b6b;
   --container:1100px;
 }
@@ -9,8 +10,8 @@
 html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#222}
 
 .container{max-width:var(--container);margin:0 auto;padding:1rem}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
-.brand{display:flex;align-items:center;gap:1rem;text-decoration:none;color:inherit}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 0}
+.brand{display:flex;align-items:center;gap:1.25rem;text-decoration:none;color:inherit}
 .logo{
   width:80px;
   height:80px;
@@ -21,11 +22,11 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
   transform:scale(1.05);
   filter: drop-shadow(0 4px 8px rgba(177,79,44,0.2));
 }
-.brand-text{font-weight:700;font-size:1.4rem}
+.brand-text{font-weight:700;font-size:1.4rem; color:#c85e33}
 
 .main-nav{position:relative}
 .nav-toggle{display:none;background:transparent;border:0;font-size:1.4rem}
-.nav-list{list-style:none;margin:0;padding:0;display:flex;gap:1rem}
+.nav-list{list-style:none;margin:0;padding:0;display:flex;gap:1.25rem}
 .nav-list a{text-decoration:none;color:var(--muted);padding:0.25rem 0.5rem;border-radius:6px}
 .nav-list a:hover{color:var(--accent)}
 
@@ -40,9 +41,11 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: height 300ms ease, background-position 300ms ease, transform 300ms ease;
+  /* evitar transiciones que cambien el flujo (height) para prevenir recálculos que provocan parpadeo */
+  transition: background-position 300ms ease, transform 300ms ease;
   color:#fff;
   padding:0;
+  will-change: background-position, transform;
 }
 .hero::before{
   content:"";
@@ -76,22 +79,54 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 .hero p, .hero .btn{ color: #fff; }
 
 .hero.shrink{
-  /* Reducida y pegada en la parte superior: mostrar overlay sólido para cubrir la imagen (evita quitar la imagen bruscamente) */
+  /* Mantener la misma caja (NO cambiar height) para evitar cambios en el flujo de la página.
+     Usamos sticky sólo para fijar visualmente el hero sin colapsar su altura. */
   position:sticky;
   top:0;
-  height:64px;
-  min-height:64px;
   z-index:1000;
-  transition: height 300ms ease, padding 300ms ease, background-color 250ms ease, transform 250ms ease;
-  will-change: transform, height;
 }
 .hero.shrink::before{
-  /* Transformar la overlay en un color sólido para que no parezca transparente */
-  background: var(--bg);
+  /* Atenuar la imagen con overlay sólido para mejorar legibilidad sin cambiar el tamaño */
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.98));
   opacity:1;
 }
-.hero.shrink .hero-inner{ padding:0.5rem 1rem; max-width:1100px; align-items:flex-start }
+.hero.shrink .hero-inner{
+  /* Reducir visualmente el contenido sin tocar la altura del hero: menos padding y escala ligera */
+  padding:0.8rem 1rem;
+  max-width:1100px;
+  align-items:flex-start;
+  transform-origin: left center;
+  transform: scale(0.98) translateY(-2px);
+  will-change: transform, padding;
+}
 .hero.shrink .hero-inner h1{ color: #000; font-size:1.05rem }
+
+/* Fixed variant: use when we want the hero visually reduced and fixed at top.
+   We create/remove a spacer element in JS to preserve document flow. */
+.hero.fixed{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  min-height: 64px;
+  z-index: 1000;
+  will-change: transform;
+}
+.hero.fixed::before{
+  /* overlay matching header color when fixed */
+  background: var(--header-bg);
+  opacity: 1;
+}
+.hero.fixed .hero-inner{
+  padding: 0 1.25rem;
+  max-width: 1100px;
+  display:flex;
+  align-items:center; /* centrar verticalmente */
+  height:100%;
+  transform: none;
+}
+.hero.fixed .hero-inner h1{ color: #000 !important; font-size: 1.05rem; margin:0 }
 
 /* Sobre Nosotros */
 .nosotros{
@@ -199,6 +234,45 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
   transform: translateY(-2px);
   background: #c85e33;
 }
+
+/* Modal de producto */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.45);
+  z-index:2100;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition: opacity 220ms ease, visibility 220ms ease;
+}
+.modal-overlay.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+.modal{
+  background:#fff;
+  border-radius:10px;
+  max-width:720px;
+  width:90%;
+  padding:1rem;
+  box-shadow:0 12px 40px rgba(0,0,0,0.25);
+  transform: translateY(8px) scale(0.98);
+  opacity:0;
+  transition: transform 220ms cubic-bezier(.2,.8,.2,1), opacity 200ms ease;
+}
+.modal-overlay.active .modal{
+  transform: translateY(0) scale(1);
+  opacity:1;
+}
+.modal img{width:100%;height:320px;object-fit:cover;border-radius:8px;margin-bottom:0.75rem}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem}
+.modal-close{background:transparent;border:0;font-size:1.6rem;line-height:1;cursor:pointer}
+.modal p{color:var(--muted);line-height:1.5}
 
 /* Responsive */
 @media(max-width:900px){
@@ -355,9 +429,29 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 .sin-gluten h2{color:var(--accent);text-align:center;margin-bottom:0.5rem}
 .sin-gluten p{max-width:900px;margin:0.5rem auto 1.5rem;text-align:center;color:var(--muted)}
 .sin-gluten .gf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:0 auto}
-.sin-gluten .gf-card{background:#fff;border-radius:10px;padding:0.6rem;box-shadow:0 6px 18px rgba(0,0,0,0.05);text-align:center}
-.sin-gluten .gf-card img{width:100%;height:180px;object-fit:cover;border-radius:8px;margin-bottom:0.6rem}
-.sin-gluten .gf-card h3{color:var(--accent);margin:0.5rem 0}
+.sin-gluten .gf-card{
+  background:#fff;
+  border-radius:10px;
+  padding:0.6rem;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  text-align:center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.sin-gluten .gf-card:hover{
+  transform: translateY(-4px);
+}
+.sin-gluten .gf-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-bottom:0.6rem;
+}
+.sin-gluten .gf-card h3{
+  color:var(--accent);
+  margin:0.5rem 0
+}
 
 @media(max-width:900px){
   .sin-gluten .gf-grid{grid-template-columns:repeat(2,1fr)}
@@ -373,8 +467,32 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 .tartas ul{max-width:900px;margin:0 auto 1rem;padding-left:1.2rem;color:var(--muted)}
 .tarta-nota{text-align:center;color:var(--muted);margin-bottom:1rem}
 .tarta-examples{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:1100px;margin:0 auto}
-.tarta-card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.05);text-align:center}
-.tarta-card h3{color:var(--accent);margin-bottom:0.4rem}
+.tarta-card{
+  background:#fff;
+  padding:1rem;
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.05);
+  text-align:center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.tarta-card:hover {
+  transform: translateY(-4px);
+}
+.tarta-card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  border-radius:8px;
+  margin-bottom:1rem;
+}
+.tarta-card.wedding img {
+  height: 320px;
+}
+.tarta-card h3{
+  color:var(--accent);
+  margin-bottom:0.4rem
+}
 
 /* Hacer que la tarjeta de bodas ocupe el ancho de las tres columnas */
 .tarta-card.wedding{grid-column:1 / -1}
@@ -385,4 +503,28 @@ html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Seg
 @media(max-width:640px){
   .tarta-examples{grid-template-columns:1fr}
   .tarta-card.wedding{grid-column:auto}
+}
+
+/* Ajustes solicitados: texto en negro y color naranja en área del encabezado */
+.site-header{
+  background: var(--header-bg);
+  transition: background-color 200ms ease;
+}
+.site-header .brand-text,
+.site-header .nav-list a{
+  color: #000;
+}
+/* Asegurar contraste al hacer hover en enlaces del header */
+.site-header .nav-list a:hover{
+  color: #111;
+}
+/* Hacer los botones del header (Productos, Nosotros, Contacto) más grandes y en negrita */
+.site-header .nav-list a{
+  font-weight:700;
+  font-size:1.05rem;
+  padding:0.35rem 0.75rem;
+}
+/* El título del hero cuando el hero está fijado mostrará el mismo color que el encabezado */
+.hero.fixed .hero-inner h1{
+  color: #000 !important;
 }
